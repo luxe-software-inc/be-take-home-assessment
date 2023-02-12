@@ -11,7 +11,7 @@ services:
     volumes:
       - ./:/app
     command: >
-      sh -c "./wait-for be-take-home-db:5432 -- python manage.py makemigrations movies && python manage.py migrate && gunicorn --workers=5 --threads=2 --bind=0.0.0.0:8000 be_take_home.wsgi"
+      sh -c "./wait-for be-take-home-db:5432 -- python manage.py makemigrations movies && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     environment:
       - DB_ENDPOINT=be-take-home-db
       - DB_NAME=devdb

@@ -9,4 +9,4 @@ class CustomerViewSet(ModelViewSet):
     queryset = CustomerModel.objects.all()
 
     def get_queryset(self):
-        return self.queryset.filter(store_id=self.kwargs.get('store_id'))
+        return self.queryset.filter()
