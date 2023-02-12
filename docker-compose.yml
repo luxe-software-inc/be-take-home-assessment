@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  be-take-home-assessment:
+    build:
+      context: .
+      args:
+        - DEV=true
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+    command: >
+      sh -c "./wait-for be-take-home-db:5432 -- python manage.py makemigrations movies && python manage.py migrate && gunicorn --workers=5 --threads=2 --bind=0.0.0.0:8000 be_take_home.wsgi"
+    environment:
+      - DB_ENDPOINT=be-take-home-db
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASSWORD=changeme
+      - SECRET_KEY=django_secret_key_8932hjk&*(&HNJKL2809
+    depends_on:
+      - be-take-home-db
+
+  be-take-home-db:
+    image: postgres:15.1-alpine3.17
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    restart: always
+    volumes:
+      - ./:/var/lib/postgresql/data
+    environment:
+      - PGDATA=/var/lib/postgresql/data/.temporary_postgres/
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=changeme

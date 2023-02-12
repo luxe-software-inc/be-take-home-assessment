@@ -1,0 +1,20 @@
+[
+    {
+        "model": "movies.CustomerModel",
+        "pk": 1,
+        "fields": {
+            "first_name": "Chris",
+            "last_name": "Brown",
+            "email": "chris@testdomain.com"
+        }
+    },
+    {
+        "model": "movies.CustomerModel",
+        "pk": 2,
+        "fields": {
+            "first_name": "Eddy",
+            "last_name": "Saw",
+            "email": "eddy@testdomain.com"
+        }
+    }
+]
