@@ -1,5 +1,8 @@
 from django.db import models
+
 from movies.models.base_model import BaseModel
+from movies.models.customer_model import CustomerModel
+from movies.models.movie_model import MovieModel
 
 
 class WishlistModel(BaseModel):
@@ -9,4 +12,24 @@ class WishlistModel(BaseModel):
         primary_key=True
     )
 
-    # TASK --> Add more fields here
+    customer = models.ForeignKey(
+        CustomerModel,
+        verbose_name='Customer',
+        on_delete=models.CASCADE,
+        related_name='wishlists',
+    )
+
+    movie = models.ForeignKey(
+        MovieModel,
+        verbose_name='Movie',
+        on_delete=models.CASCADE,
+        related_name='wishlists',
+    )
+
+    def __str__(self):
+        return f"{self.customer} - {self.movie}"
+
+    class Meta:
+        verbose_name = 'Wishlist Item'
+        verbose_name_plural = 'Wishlist Items'
+        unique_together = ['customer', 'movie']
